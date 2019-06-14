@@ -1,19 +1,24 @@
 require 'sinatra/base'
 
 class Battle < Sinatra::Base
-  # get '/' do
-  #   'Testing insfrastructure working!'
-  # end
+  enable :sessions
+
   get '/' do
-    # @name = params[:name]
-    erb :player_form
+    erb :index
   end
 
-  post '/page1' do
-    @name1 = params[:name1]
-    @name2 = params[:name2]
-    erb :player_land
+  post '/names' do
+    session[:player_1_name] = params[:player_1_name]
+    session[:player_2_name] = params[:player_2_name]
+    redirect '/play'
   end
 
+  get '/play' do
+    @player_1_name = session[:player_1_name]
+    @player_2_name = session[:player_2_name]
+    erb :play
+  end
+
+# start the server if ruby file executed directly - do this in command line (ruby app.rb)- saves starting server separately
   run! if app_file ==$0
 end
